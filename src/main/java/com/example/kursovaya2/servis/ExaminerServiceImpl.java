@@ -19,14 +19,13 @@ public class ExaminerServiceImpl implements ExaminerService {
 
     @Override
     public Collection<Question> getQuestions(int amount) {
-        if (amount > 1){
+        if (amount < 1){
             throw new VerySmallAmount();
         }
         if (amount > questionService.getAll().size()){
             throw new TooManyAmount();
         }
         questionsCollection.clear();
-        System.out.println(questionsCollection);
         while (questionsCollection.size() < amount){
             Question newQuestion = questionService.getRandomQuestion(null);
             if (!questionsCollection.contains(newQuestion)) {

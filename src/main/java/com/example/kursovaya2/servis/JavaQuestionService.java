@@ -16,7 +16,7 @@ public class JavaQuestionService implements QuestionService {
 
     @Override
     public Question add(String question, String answer) {
-        if (question == null || answer == null){
+        if (question == null || answer == null || question.equals("") || answer.equals("")){
             throw new NullableParametrsException();
         }
         Question newQuestion = new Question(question, answer);
@@ -25,6 +25,9 @@ public class JavaQuestionService implements QuestionService {
 
     @Override
     public Question add(Question question) {
+        if (question == null){
+            throw new NullableParametrsException();
+        }
         if (questions.contains(question)) {
             throw new SameQuestionException();
         }
