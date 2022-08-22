@@ -3,6 +3,7 @@ package com.example.kursovaya2.servis;
 import com.example.kursovaya2.exception.TooManyAmount;
 import com.example.kursovaya2.exception.VerySmallAmount;
 import com.example.kursovaya2.model.Question;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -11,7 +12,7 @@ import java.util.*;
 public class ExaminerServiceImpl implements ExaminerService {
     private final QuestionService questionService;
 
-    public ExaminerServiceImpl(QuestionService questionService) {
+    public ExaminerServiceImpl(@Qualifier("javaQuestionService") QuestionService questionService) {
         this.questionService = questionService;
     }
 

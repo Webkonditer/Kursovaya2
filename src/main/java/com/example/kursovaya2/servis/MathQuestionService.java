@@ -10,13 +10,13 @@ import java.util.*;
 import java.util.Random;
 
 @Service
-public class JavaQuestionService implements QuestionService {
+public class MathQuestionService implements QuestionService {
 
     private  QuestionRepository questionRepository;
     private final Random random = new Random();
 
     @Autowired
-    public void setQuestionRepository(@Qualifier("javaQuestionRepositoryImpl") QuestionRepository questionRepository) {
+    public void setQuestionRepository(@Qualifier("mathQuestionRepositoryImpl") QuestionRepository questionRepository) {
         this.questionRepository = questionRepository;
     }
 

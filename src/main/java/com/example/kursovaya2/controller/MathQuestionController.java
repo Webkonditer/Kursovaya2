@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Collection;
 
 @RestController
-@RequestMapping("/java")
-public class JavaQuestionController {
+@RequestMapping("/math")
+public class MathQuestionController {
     private final QuestionService questionService;
 
-    public JavaQuestionController(@Qualifier("javaQuestionService") QuestionService questionService) {
+    public MathQuestionController(@Qualifier("mathQuestionService")QuestionService questionService) {
         this.questionService = questionService;
     }
 
@@ -33,10 +33,6 @@ public class JavaQuestionController {
     @GetMapping("/")
     public Collection<Question> getQuestion() {
         return questionService.getAll();
-    }
- @GetMapping("/random")
-    public Question getRandomQuestion() {
-        return questionService.getRandomQuestion();
     }
 
 }
