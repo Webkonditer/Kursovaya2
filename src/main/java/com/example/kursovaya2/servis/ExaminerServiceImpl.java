@@ -9,9 +9,7 @@ import java.util.*;
 
 @Service
 public class ExaminerServiceImpl implements ExaminerService {
-
-    private List<Question> questionsCollection = new ArrayList<>();
-    private QuestionService questionService;
+    private final QuestionService questionService;
 
     public ExaminerServiceImpl(QuestionService questionService) {
         this.questionService = questionService;
@@ -25,9 +23,9 @@ public class ExaminerServiceImpl implements ExaminerService {
         if (amount > questionService.getAll().size()){
             throw new TooManyAmount();
         }
-        questionsCollection.clear();
+        List<Question> questionsCollection = new ArrayList<>();
         while (questionsCollection.size() < amount){
-            Question newQuestion = questionService.getRandomQuestion(null);
+            Question newQuestion = questionService.getRandomQuestion();
             if (!questionsCollection.contains(newQuestion)) {
                 questionsCollection.add(newQuestion);
             }

@@ -12,11 +12,11 @@ import java.util.Random;
 @Service
 public class JavaQuestionService implements QuestionService {
 
-    private List<Question> questions = new ArrayList<>();
+    private final List<Question> questions = new ArrayList<>();
 
     @Override
     public Question add(String question, String answer) {
-        if (question == null || answer == null || question.equals("") || answer.equals("")){
+        if (question.equals("") || answer.equals("")){
             throw new NullableParametrsException();
         }
         Question newQuestion = new Question(question, answer);
@@ -50,7 +50,7 @@ public class JavaQuestionService implements QuestionService {
     }
 
     @Override
-    public Question getRandomQuestion(Question question) {
+    public Question getRandomQuestion() {
         Random random = new Random();
         return questions.get(random.nextInt(questions.size()));
     }

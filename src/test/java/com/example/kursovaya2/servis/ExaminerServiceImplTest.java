@@ -7,6 +7,7 @@ import com.example.kursovaya2.model.Question;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -22,13 +23,14 @@ class ExaminerServiceImplTest {
     @Mock
     private QuestionService questionService;
 
+    @InjectMocks
     private ExaminerServiceImpl out;
 
-    private final List<Question> collection = List.of(
-            new Question("Вопрос1", "Ответ1"),
-            new Question("Вопрос2", "Ответ2"),
-            new Question("Вопрос3", "Ответ3")
-    );
+    private Question question1 = new Question("Вопрос1", "Ответ1");
+    private Question question2 = new Question("Вопрос2", "Ответ2");
+    private Question question3 = new Question("Вопрос3", "Ответ3");
+    private Question question4 = new Question("Вопрос4", "Ответ4");
+    private List<Question> collection = List.of(question1, question2, question3, question4);
 
     @BeforeEach
     public void initOut(){
@@ -44,18 +46,18 @@ class ExaminerServiceImplTest {
     void getQuestionsTooManyAmountTest() {
         when(questionService.getAll())
                 .thenReturn(collection);
-        assertThrows(TooManyAmount.class, () -> out.getQuestions(4));
+        assertThrows(TooManyAmount.class, () -> out.getQuestions(5));
     }
 
     @Test
     void getQuestionsTest() {
-        when(questionService.getRandomQuestion(null))
-                .thenReturn(new Question("Вопрос1", "Ответ1"));
+        when(questionService.getRandomQuestion())
+                .thenReturn(question1, question2, question4);
         when(questionService.getAll())
                 .thenReturn(collection);
 
-        Collection<Question> actual = out.getQuestions(1);
-        Collection<Question> expected = List.of(new Question("Вопрос1", "Ответ1"));
+        Collection<Question> actual = out.getQuestions(3);
+        Collection<Question> expected = List.of(question1, question2, question4);
         assertEquals(expected, actual);
     }
 }
