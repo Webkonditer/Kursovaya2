@@ -13,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -21,20 +22,27 @@ import static org.mockito.Mockito.when;
 class ExaminerServiceImplTest {
 
     @Mock
-    private QuestionService questionService;
+    private QuestionService javaQuestionService;
+
+    @Mock
+    private QuestionService mathQuestionService;
 
     @InjectMocks
     private ExaminerServiceImpl out;
 
-    private Question question1 = new Question("Вопрос1", "Ответ1");
-    private Question question2 = new Question("Вопрос2", "Ответ2");
-    private Question question3 = new Question("Вопрос3", "Ответ3");
-    private Question question4 = new Question("Вопрос4", "Ответ4");
-    private List<Question> collection = List.of(question1, question2, question3, question4);
+    private Question jQuestion1 = new Question("JВопрос1", "JОтвет1");
+    private Question jQuestion2 = new Question("JВопрос2", "JОтвет2");
+    private Question jQuestion3 = new Question("JВопрос3", "JОтвет3");
+    private Set<Question> javaCollection = Set.of(jQuestion1, jQuestion2, jQuestion3);
+
+    private Question mQuestion1 = new Question("MВопрос1", "MОтвет1");
+    private Question mQuestion2 = new Question("MВопрос2", "MОтвет2");
+    private Question mQuestion3 = new Question("MВопрос3", "MОтвет3");
+    private Set<Question> mathCollection = Set.of(mQuestion1, mQuestion2, mQuestion3);
 
     @BeforeEach
     public void initOut(){
-        out = new ExaminerServiceImpl(questionService);
+        out = new ExaminerServiceImpl(javaQuestionService, mathQuestionService);
     }
 
     @Test
@@ -44,20 +52,26 @@ class ExaminerServiceImplTest {
 
     @Test
     void getQuestionsTooManyAmountTest() {
-        when(questionService.getAll())
-                .thenReturn(collection);
-        assertThrows(TooManyAmount.class, () -> out.getQuestions(5));
+        when(javaQuestionService.getAll())
+                .thenReturn(javaCollection);
+        when(mathQuestionService.getAll())
+                .thenReturn(mathCollection);
+        assertThrows(TooManyAmount.class, () -> out.getQuestions(7));
     }
 
     @Test
     void getQuestionsTest() {
-        when(questionService.getRandomQuestion())
-                .thenReturn(question1, question2, question4);
-        when(questionService.getAll())
-                .thenReturn(collection);
+        when(javaQuestionService.getRandomQuestion())
+                .thenReturn(jQuestion3, jQuestion1, jQuestion2);
+        when(javaQuestionService.getAll())
+                .thenReturn(javaCollection);
+        when(mathQuestionService.getRandomQuestion())
+                .thenReturn(mQuestion3, mQuestion1, mQuestion2);
+        when(mathQuestionService.getAll())
+                .thenReturn(mathCollection);
 
-        Collection<Question> actual = out.getQuestions(3);
-        Collection<Question> expected = List.of(question1, question2, question4);
+        Collection<Question> actual = out.getQuestions(6);
+        Collection<Question> expected = Set.of(jQuestion3, jQuestion1, jQuestion2, mQuestion3, mQuestion1, mQuestion2);
         assertEquals(expected, actual);
     }
 }

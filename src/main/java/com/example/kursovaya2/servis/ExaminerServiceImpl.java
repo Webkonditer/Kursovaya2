@@ -10,10 +10,15 @@ import java.util.*;
 
 @Service
 public class ExaminerServiceImpl implements ExaminerService {
-    private final QuestionService questionService;
+    private final QuestionService javaQuestionService;
+    private final QuestionService mathQuestionService;
 
-    public ExaminerServiceImpl(@Qualifier("javaQuestionService") QuestionService questionService) {
-        this.questionService = questionService;
+    private final Random random = new Random();
+
+    public ExaminerServiceImpl(@Qualifier("javaQuestionService") QuestionService javaQuestionService,
+                               @Qualifier("mathQuestionService") QuestionService mathQuestionService) {
+        this.javaQuestionService = javaQuestionService;
+        this.mathQuestionService = mathQuestionService;
     }
 
     @Override
@@ -21,15 +26,14 @@ public class ExaminerServiceImpl implements ExaminerService {
         if (amount < 1){
             throw new VerySmallAmount();
         }
-        if (amount > questionService.getAll().size()){
+        if (amount > javaQuestionService.getAll().size() + mathQuestionService.getAll().size()){
             throw new TooManyAmount();
         }
-        List<Question> questionsCollection = new ArrayList<>();
-        while (questionsCollection.size() < amount){
-            Question newQuestion = questionService.getRandomQuestion();
-            if (!questionsCollection.contains(newQuestion)) {
-                questionsCollection.add(newQuestion);
-            }
+        Set<Question> questionsCollection = new HashSet<>();
+        while (questionsCollection.size() < amount) {
+            Question newQuestion = random.nextInt(2) == 1 ? javaQuestionService.getRandomQuestion()
+                    : mathQuestionService.getRandomQuestion();
+            questionsCollection.add(newQuestion);
         }
         return questionsCollection;
     }

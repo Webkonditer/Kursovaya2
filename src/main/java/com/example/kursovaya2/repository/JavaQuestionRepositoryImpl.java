@@ -6,14 +6,21 @@ import com.example.kursovaya2.exception.SameQuestionException;
 import com.example.kursovaya2.model.Question;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import javax.annotation.PostConstruct;
+import java.util.*;
 
 @Repository
 public class JavaQuestionRepositoryImpl implements QuestionRepository {
-    private final List<Question> questions = new ArrayList<>();
+    private final Set<Question> questions = new HashSet<>();
 
+    @PostConstruct
+    private void init(){
+        questions.add(new Question("Java questiuon 1", "Java answer 1"));
+        questions.add(new Question("Java questiuon 2", "Java answer 2"));
+        questions.add(new Question("Java questiuon 3", "Java answer 3"));
+        questions.add(new Question("Java questiuon 4", "Java answer 4"));
+        questions.add(new Question("Java questiuon 5", "Java answer 5"));
+    }
     @Override
     public Question add(Question question) {
         if (question == null){

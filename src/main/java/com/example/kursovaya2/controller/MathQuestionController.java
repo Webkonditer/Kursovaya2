@@ -35,4 +35,9 @@ public class MathQuestionController {
         return questionService.getAll();
     }
 
+    @GetMapping("/random")
+    public Question getRandomQuestion() {
+        return questionService.getRandomQuestion();
+    }
+
 }

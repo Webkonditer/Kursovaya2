@@ -34,7 +34,7 @@ public class JavaQuestionController {
     public Collection<Question> getQuestion() {
         return questionService.getAll();
     }
- @GetMapping("/random")
+    @GetMapping("/random")
     public Question getRandomQuestion() {
         return questionService.getRandomQuestion();
     }

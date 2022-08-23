@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collection;
 
 @RestController
-@RequestMapping("/java")
 public class ExamController {
 
     private ExaminerService  examinerService;
